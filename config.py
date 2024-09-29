@@ -1,6 +1,5 @@
-import os
 from dotenv import load_dotenv
-
+import os
 
 
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -13,6 +12,7 @@ class Config:
     
 class DevelopmentConfig(Config):
     DEBUG = True
+    PORT = os.environ.get('PORT') or 5000
     SQLALCHEMY_DATABASE_URI = os.environ.get('SQLALCHEMY_DATABASE_URL') or 'sqlite:///'+os.path.join(basedir, 'test.db')
     
     
