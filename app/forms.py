@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, EmailField, PasswordField, SubmitField, BooleanField
+from wtforms import StringField, EmailField, PasswordField, SubmitField, BooleanField, FloatField, DateField
 from wtforms.validators import DataRequired, Email, EqualTo, Length
 
 
@@ -11,9 +11,19 @@ class LoginForm(FlaskForm):
     
     
 class RegisterForm(FlaskForm):
-    username = StringField('username', validators=[DataRequired()])
-    email = EmailField('email', validators=[DataRequired(), Email()])
-    password = PasswordField('password', validators=[DataRequired(), Length(min=8)])
-    repeat_password = PasswordField('password', validators=[DataRequired(), EqualTo(password)])
+    username = StringField('Username', validators=[DataRequired()])
+    email = EmailField('Email', validators=[DataRequired(), Email()])
+    password = PasswordField('Password', validators=[DataRequired(), Length(min=8)])
+    repeat_password = PasswordField('Repeat Password', validators=[DataRequired(), EqualTo(password)])
     submit = SubmitField('Signup')
     
+class CreatePortfolioForm(FlaskForm):
+    name = StringField('Portfolio Name', validators=[DataRequired()])
+    submit = SubmitField('Create')
+    
+class AddStockForm(FlaskForm):
+    symbol = StringField('Symbol', validators=[DataRequired()])
+    cost = FloatField('Cost Per Share', validators=[DataRequired()])
+    shares = FloatField('Shares', validators=[DataRequired()])
+    date = DateField('Date', validators=[DataRequired()])
+    submit = SubmitField('Add')

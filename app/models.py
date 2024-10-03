@@ -30,8 +30,7 @@ class User(UserMixin,db.Model):
     def to_json(self):
         return {
             'username' : self.username,
-            'email' : self.email,
-            'password' : self.password
+            'email' : self.email
         }
     
 class Portfolio(db.Model):
@@ -45,7 +44,7 @@ class Portfolio(db.Model):
     user: so.Mapped["User"] = so.relationship("User", back_populates='portfolios')
     
     #One-to-Many relationship: A portfolio can have multiples stocks
-    stocks: so.Mapped["Stock"] = so.relationship("Stock", back_populates='portfolios')
+    stocks: so.Mapped[List[Optional["Stock"]]] = so.relationship("Stock", back_populates='portfolios')
     
 class Stock(db.Model):
     __tablename__ = 'stocks'
@@ -67,8 +66,32 @@ class Stock(db.Model):
     market_value: so.Mapped[float] = so.mapped_column(sa.Float, nullable=False)
     daily_gain_value: so.Mapped[float] = so.mapped_column(sa.Float, nullable=False)
     daily_gain_percent: so.Mapped[float] = so.mapped_column(sa.Float, nullable=False)
+    
     total_cost: so.Mapped[float] = so.mapped_column(sa.Float, nullable=False)
+    total_gain_value: so.Mapped[float] = so.mapped_column(sa.Float, nullable=False)  # Calculated field
+    total_gain_percent: so.Mapped[float] = so.mapped_column(sa.Float, nullable=False)  # Calculated field
+    
+    avg_cost_per_share: so.Mapped[float] = so.mapped_column(sa.Float, nullable=False)  # Total cost / shares
     last_position_date: so.Mapped[datetime] = so.mapped_column(sa.DateTime, nullable=False)
+    
+    def calculate_total_gain(self):
+        """
+        Calculate total gain in value and percentage based on the last price and total cost.
+        """
+        self.total_gain_value = (self.last_price * self.shares) - self.total_cost
+        self.total_gain_percent = (self.total_gain_value / self.total_cost) * 100 if self.total_cost != 0 else 0
+        
+    def calculate_market_value(self):
+        """
+        Calculate the market value based on the last price and number of shares.
+        """
+        self.market_value = self.last_price * self.shares
+    
+    def calculate_avg_cost_per_share(self):
+        """
+        Calculate the average cost per share based on total cost and number of shares.
+        """
+        self.avg_cost_per_share = self.total_cost / self.shares if self.shares != 0 else 0
     
 
 

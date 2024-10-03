@@ -3,4 +3,41 @@
 
 {% block content%}
 
+<div class="container-fluid mt-3" style="max-width: 900px;">
+    <div class="card mb-3">
+        <div class="card-body">
+            <form action="" method="POST">
+                {{ form.hidden_tag() }}
+                <div class="form-group">
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label for="symbol">{{ form.symbol.label(class='form-label') }}</label>
+                            {{ form.symbol(class='form-control', id='symbol', placeholder='Enter stock symbol') }}
+                            <div id="suggestions" class="suggestions"></div>
+                        </div>
+                        <div class="col">
+                            <label for="cost">{{ form.cost.label(class='form-label') }}</label>
+                            {{ form.cost(class='form-control', placeholder='Enter cost per share') }}
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label for="shares">{{ form.shares.label(class='form-label') }}</label>
+                            {{ form.shares(class='form-control', placeholder='Enter number of shares') }}
+                        </div>
+                        <div class="col">
+                            <label for="date">{{ form.date.label(class='form-label') }}</label>
+                            {{ form.date(class='form-control', placeholder='Select purchase date') }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        {{ form.submit(class='btn btn-primary vw-100') }}
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
 {% endblock %}
