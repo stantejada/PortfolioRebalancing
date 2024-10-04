@@ -37,6 +37,105 @@
             </form>
         </div>
     </div>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr class="table-dark align-middle text-center">
+                            <th>Symbol</th>
+                            <th>Last Price</th>
+                            <th>Currency</th>
+                            <th>Change</th>
+                            <th>Change (%)</th>
+                            <th>Shares</th>
+                            <th>Market Value</th>
+                            <th>Day Gain ($)</th>
+                            <th>Day Gain (%)</th>
+                            <th>Total Gain ($)</th>
+                            <th>Total Gain (%)</th>
+                            <th>Total Cost</th>
+                            <th>AC/Shares</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if portfolio.stocks != None %}
+                        {% for stock in portfolio.stocks %}
+                        <tr class="align-middle text-center">
+                            <td class="fw-bold">{{ stock.symbol }}</td>
+                            <td>${{ "%.2f"|format(stock.last_price) }}</td>
+                            <td>{{ stock.currency }}</td>
+                            <td class="{{ 'text-success' if stock.price_change >= 0 else 'text-danger' }}">
+                                {{ "%.2f"|format(stock.price_change) }}
+                            </td>
+                            <td class="{{ 'text-success' if stock.percent_change >= 0 else 'text-danger' }}">
+                                {{ "%.2f"|format(stock.percent_change) }}%
+                            </td>
+                            <td>{{ "%.2f"|format(stock.shares) }}</td>
+                            <td>${{ "%.2f"|format(stock.market_value) }}</td>
+                            <td class="{{ 'text-success' if stock.daily_gain_value >= 0 else 'text-danger' }}">
+                                ${{ "%.2f"|format(stock.daily_gain_value) }}
+                            </td>
+                            <td class="{{ 'text-success' if stock.daily_gain_percent >= 0 else 'text-danger' }}">
+                                {{ "%.2f"|format(stock.daily_gain_percent) }}%
+                            </td>
+                            <td class="{{ 'text-success' if stock.total_gain_value >= 0 else 'text-danger' }}">
+                                ${{ "%.2f"|format(stock.total_gain_value) }}
+                            </td>
+                            <td class="{{ 'text-success' if stock.total_gain_percent >= 0 else 'text-danger' }}">
+                                {{ "%.2f"|format(stock.total_gain_percent) }}%
+                            </td>
+                            <td>${{ "%.2f"|format(stock.total_cost) }}</td>
+                            <td>${{ "%.2f"|format(stock.avg_cost_per_share) }}</td>
+                            <td><button class="bi bi-arrow-up-circle btn btn-success mx-1" title="Buy"></button><button
+                                    class="bi bi-arrow-down-circle btn btn-danger " title="Sell"></button></td>
+                        </tr>
+                        {% endfor %}
+                        {% else %}
+                        <tr>
+                            <td colspan="13" class="text-center">No stocks in this portfolio</td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- Portfolio Statistics -->
+    <div class="card mt-4">
+        <div class="card-body">
+            <h5>Portfolio Statistics</h5>
+            <div class="row">
+                <div class="col-md-4">
+                    <strong>Total Market Value:</strong> ${{ "%.2f"|format(total_market_value) }}
+                </div>
+                <div class="col-md-4">
+                    <strong>Total Cost:</strong> ${{ "%.2f"|format(total_cost) }}
+                </div>
+                <div class="col-md-4">
+                    <strong>Total Gain/Loss:</strong> <span
+                        class="{{ 'text-success' if total_gain_value >= 0 else 'text-danger' }}">
+                        ${{ "%.2f"|format(total_gain_value) }} ({{ "%.2f"|format(total_gain_percent) }}%)
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sector Breakdown (Optional) -->
+    <div class="card mt-4">
+        <div class="card-body">
+            <h5>Sector Breakdown</h5>
+            <ul>
+                {% for sector, value in sector_breakdown.items() %}
+                <li>{{ sector }}: ${{ "%.2f"|format(value) }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
 </div>
 
 

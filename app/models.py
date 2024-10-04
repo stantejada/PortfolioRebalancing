@@ -57,6 +57,7 @@ class Stock(db.Model):
     
     #Stock Details
     company: so.Mapped[str] = so.mapped_column(sa.String(100), nullable=False)
+    industry: so.Mapped[str] = so.mapped_column(sa.String(100), nullable=False)
     symbol: so.Mapped[str] = so.mapped_column(sa.String(5), nullable=False)
     last_price: so.Mapped[float] = so.mapped_column(sa.Float, nullable=False)
     currency: so.Mapped[str] = so.mapped_column(sa.String(10), nullable=False)

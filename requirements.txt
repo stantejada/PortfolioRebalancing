@@ -9,3 +9,4 @@ seaborn
 Flask-WTF
 flasgger
 APScheduler
+email-validator

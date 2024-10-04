@@ -23,7 +23,6 @@ def update_stock_prices(app):
 
                 db.session.commit()
 
-
 # Scheduler setup function
 def start_scheduler(app):
     scheduler = BackgroundScheduler()
