@@ -13,8 +13,8 @@ class LoginForm(FlaskForm):
 class RegisterForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     email = EmailField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired(), Length(min=8)])
-    repeat_password = PasswordField('Repeat Password', validators=[DataRequired(), EqualTo(password)])
+    password = PasswordField('Password', validators=[DataRequired(), Length(min=8, max=20)])
+    repeat_password = PasswordField('Repeat Password', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Signup')
     
 class CreatePortfolioForm(FlaskForm):

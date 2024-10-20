@@ -7,6 +7,7 @@ import sqlalchemy as sa
 import yfinance as yf
 from datetime import datetime, timezone
 from apscheduler.schedulers.background import BackgroundScheduler
+from app.services import graph
 
 portfolio_bp = Blueprint('portfolio', __name__)
 
@@ -54,7 +55,7 @@ def portfolio_details(portfolio_id):
             return redirect(url_for('portfolio.portfolio_details', portfolio_id=portfolio_id))
         
         #extract stock closing
-        
+        print(history)
         try:
             last_price = history['Close'].iloc[-1]  # Closing price from history
         except IndexError:
@@ -99,11 +100,14 @@ def portfolio_details(portfolio_id):
     total_gain_percent = (total_gain_value / total_market_value) * 100 if total_market_value > 0 else 0
     total_cost = sum(stock.total_cost for stock in portfolio.stocks)
     
-    # Optional: Risk or sector breakdown (if stock has sector info)
+    #  Risk or sector breakdown 
     sector_breakdown = {}
     for stock in portfolio.stocks:
-        sector = stock.industry if hasattr(stock, 'sector') else 'Unknown'
+        sector = stock.industry if hasattr(stock, 'industry') else 'Unknown'
         sector_breakdown[sector] = sector_breakdown.get(sector, 0) + stock.market_value
+        
+    graph.visualize(portfolio_id=portfolio_id)
+    
     
     return render_template('_portfolio.html', title='Portfolio Details', form=form, portfolio=portfolio,
                            total_market_value=total_market_value,

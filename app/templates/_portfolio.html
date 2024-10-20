@@ -125,12 +125,13 @@
     </div>
 
     <!-- Sector Breakdown (Optional) -->
-    <div class="card mt-4">
+    <div class="card mt-4 mb-3">
         <div class="card-body">
-            <h5>Sector Breakdown</h5>
+            <h5>Industry Breakdown</h5>
             <ul>
                 {% for sector, value in sector_breakdown.items() %}
-                <li>{{ sector }}: ${{ "%.2f"|format(value) }}</li>
+                <li>{{ sector }}: ${{ "%.2f"|format(value) }} | <strong>%{{
+                        "%.2f"|format(value/total_cost*100) }}</strong></li>
                 {% endfor %}
             </ul>
         </div>
